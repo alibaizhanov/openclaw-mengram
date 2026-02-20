@@ -161,16 +161,21 @@ export class MengramClient {
     return this.request("POST", "/v1/add", { messages });
   }
 
-  async addText(text: string): Promise<{ status: string }> {
-    return this.request("POST", "/v1/add_text", { text });
+  async addText(text: string): Promise<{ status: string; job_id?: string }> {
+    return this.request("POST", "/v1/add", {
+      messages: [{ role: "user", content: text }],
+    });
   }
 
   async getProfile(
-    userId = "default",
+    userId?: string,
     force = false,
   ): Promise<ProfileResponse> {
     const qs = force ? "?force=true" : "";
-    return this.request("GET", `/v1/profile/${userId}${qs}`);
+    const path = userId && userId !== "default"
+      ? `/v1/profile/${encodeURIComponent(userId)}${qs}`
+      : `/v1/profile${qs}`;
+    return this.request("GET", path);
   }
 
   async getMemories(): Promise<{ memories: unknown[] }> {
