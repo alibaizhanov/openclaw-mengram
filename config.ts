@@ -8,6 +8,13 @@ export interface MengramConfig {
   injectProfile: boolean;
   profileFrequency: number;
   debug: boolean;
+  maxFactsPerEntity: number;
+  maxRelationsPerEntity: number;
+  maxEpisodes: number;
+  maxProcedures: number;
+  maxStepsPerProcedure: number;
+  captureMessageCount: number;
+  requestTimeout: number;
 }
 
 function resolveEnv(value: unknown): string | undefined {
@@ -15,6 +22,10 @@ function resolveEnv(value: unknown): string | undefined {
   const match = value.match(/^\$\{(\w+)\}$/);
   if (match) return process.env[match[1]];
   return value;
+}
+
+function num(val: unknown, fallback: number): number {
+  return typeof val === "number" && val > 0 ? val : fallback;
 }
 
 export function parseConfig(raw: unknown): MengramConfig {
@@ -28,11 +39,17 @@ export function parseConfig(raw: unknown): MengramConfig {
     ),
     autoRecall: cfg.autoRecall !== false,
     autoCapture: cfg.autoCapture !== false,
-    topK: typeof cfg.topK === "number" ? cfg.topK : 5,
+    topK: num(cfg.topK, 5),
     graphDepth: typeof cfg.graphDepth === "number" ? cfg.graphDepth : 2,
     injectProfile: cfg.injectProfile === true,
-    profileFrequency:
-      typeof cfg.profileFrequency === "number" ? cfg.profileFrequency : 25,
+    profileFrequency: num(cfg.profileFrequency, 25),
     debug: cfg.debug === true,
+    maxFactsPerEntity: num(cfg.maxFactsPerEntity, 5),
+    maxRelationsPerEntity: num(cfg.maxRelationsPerEntity, 5),
+    maxEpisodes: num(cfg.maxEpisodes, 5),
+    maxProcedures: num(cfg.maxProcedures, 3),
+    maxStepsPerProcedure: num(cfg.maxStepsPerProcedure, 8),
+    captureMessageCount: num(cfg.captureMessageCount, 10),
+    requestTimeout: num(cfg.requestTimeout, 15000),
   };
 }

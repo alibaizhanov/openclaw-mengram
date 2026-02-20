@@ -49,7 +49,7 @@ export default {
       return;
     }
 
-    const client = new MengramClient(cfg.apiKey, cfg.baseUrl);
+    const client = new MengramClient(cfg.apiKey, cfg.baseUrl, cfg.requestTimeout);
 
     log.info("connected");
 

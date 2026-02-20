@@ -10,12 +10,12 @@ import type { Logger } from "../logger.ts";
 
 const turnCounters = new Map<string, number>();
 
-function formatSemantic(results: SemanticResult[]): string {
+function formatSemantic(results: SemanticResult[], cfg: MengramConfig): string {
   const lines: string[] = [];
 
   for (const r of results) {
     if (r.facts.length > 0) {
-      for (const fact of r.facts.slice(0, 5)) {
+      for (const fact of r.facts.slice(0, cfg.maxFactsPerEntity)) {
         lines.push(`- ${r.entity}: ${fact}`);
       }
     }
@@ -25,12 +25,12 @@ function formatSemantic(results: SemanticResult[]): string {
   return `KNOWN FACTS:\n${lines.join("\n")}`;
 }
 
-function formatRelations(results: SemanticResult[]): string {
+function formatRelations(results: SemanticResult[], cfg: MengramConfig): string {
   const lines: string[] = [];
 
   for (const r of results) {
     if (!r.relations || r.relations.length === 0) continue;
-    for (const rel of r.relations.slice(0, 5)) {
+    for (const rel of r.relations.slice(0, cfg.maxRelationsPerEntity)) {
       const arrow = rel.direction === "outgoing" ? "->" : "<-";
       lines.push(`- ${r.entity} ${arrow} ${rel.type} ${arrow} ${rel.target}`);
     }
@@ -40,10 +40,10 @@ function formatRelations(results: SemanticResult[]): string {
   return `RELATIONSHIPS:\n${lines.join("\n")}`;
 }
 
-function formatEpisodic(results: EpisodicResult[]): string {
+function formatEpisodic(results: EpisodicResult[], cfg: MengramConfig): string {
   const lines: string[] = [];
 
-  for (const ep of results.slice(0, 5)) {
+  for (const ep of results.slice(0, cfg.maxEpisodes)) {
     let line = ep.summary;
     if (ep.outcome) line += ` -> ${ep.outcome}`;
     if (ep.created_at) {
@@ -57,12 +57,12 @@ function formatEpisodic(results: EpisodicResult[]): string {
   return `PAST EVENTS:\n${lines.join("\n")}`;
 }
 
-function formatProcedural(results: ProceduralResult[]): string {
+function formatProcedural(results: ProceduralResult[], cfg: MengramConfig): string {
   const lines: string[] = [];
 
-  for (const pr of results.slice(0, 3)) {
+  for (const pr of results.slice(0, cfg.maxProcedures)) {
     const steps = pr.steps
-      .slice(0, 8)
+      .slice(0, cfg.maxStepsPerProcedure)
       .map((s) => s.action)
       .join(" -> ");
     const vTag = pr.version > 1 ? ` v${pr.version}` : "";
@@ -75,19 +75,19 @@ function formatProcedural(results: ProceduralResult[]): string {
   return `KNOWN WORKFLOWS:\n${lines.join("\n")}`;
 }
 
-function formatSearchResults(data: SearchAllResponse): string {
+function formatSearchResults(data: SearchAllResponse, cfg: MengramConfig): string {
   const parts: string[] = [];
 
-  const semantic = formatSemantic(data.semantic || []);
+  const semantic = formatSemantic(data.semantic || [], cfg);
   if (semantic) parts.push(semantic);
 
-  const relations = formatRelations(data.semantic || []);
+  const relations = formatRelations(data.semantic || [], cfg);
   if (relations) parts.push(relations);
 
-  const episodic = formatEpisodic(data.episodic || []);
+  const episodic = formatEpisodic(data.episodic || [], cfg);
   if (episodic) parts.push(episodic);
 
-  const procedural = formatProcedural(data.procedural || []);
+  const procedural = formatProcedural(data.procedural || [], cfg);
   if (procedural) parts.push(procedural);
 
   return parts.join("\n\n");
@@ -112,7 +112,7 @@ export function buildRecallHandler(
 
       const data = await client.searchAll(prompt, cfg.topK, cfg.graphDepth);
 
-      const memoryContext = formatSearchResults(data);
+      const memoryContext = formatSearchResults(data, cfg);
 
       // Inject cognitive profile periodically
       let profileContext = "";

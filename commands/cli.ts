@@ -37,7 +37,7 @@ export function registerCli(
           console.log("\n=== Semantic ===");
           for (const r of data.semantic || []) {
             console.log(`  ${r.entity} (${r.type}, score: ${r.score.toFixed(3)})`);
-            for (const f of r.facts.slice(0, 5)) {
+            for (const f of r.facts.slice(0, cfg.maxFactsPerEntity)) {
               console.log(`    - ${f}`);
             }
           }
@@ -138,7 +138,7 @@ export function registerCli(
             console.log(
               `  Success: ${pr.success_count} | Fail: ${pr.fail_count}`,
             );
-            for (const s of pr.steps.slice(0, 10)) {
+            for (const s of pr.steps.slice(0, cfg.maxStepsPerProcedure)) {
               console.log(`    ${s.step ?? "-"}. ${s.action}`);
             }
           }

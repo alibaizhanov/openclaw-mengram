@@ -48,7 +48,7 @@ export function buildCaptureHandler(
 
     try {
       // Take last 10 messages
-      const recent = extractMessages(rawMessages).slice(-10);
+      const recent = extractMessages(rawMessages).slice(-cfg.captureMessageCount);
       if (recent.length === 0) return;
 
       // Strip injected memory context to prevent recursion

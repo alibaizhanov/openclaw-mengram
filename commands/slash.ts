@@ -48,7 +48,7 @@ export function registerSlashCommands(
         if (data.semantic?.length > 0) {
           const lines: string[] = [];
           for (const r of data.semantic) {
-            for (const f of r.facts.slice(0, 3)) {
+            for (const f of r.facts.slice(0, cfg.maxFactsPerEntity)) {
               lines.push(`  ${r.entity}: ${f}`);
             }
           }
@@ -57,14 +57,14 @@ export function registerSlashCommands(
 
         if (data.episodic?.length > 0) {
           const lines = data.episodic
-            .slice(0, 3)
+            .slice(0, cfg.maxEpisodes)
             .map((ep) => `  ${ep.summary}`);
           parts.push(`Events:\n${lines.join("\n")}`);
         }
 
         if (data.procedural?.length > 0) {
           const lines = data.procedural
-            .slice(0, 3)
+            .slice(0, cfg.maxProcedures)
             .map(
               (pr) =>
                 `  ${pr.name} (v${pr.version}, ${pr.success_count}/${pr.success_count + pr.fail_count} success)`,

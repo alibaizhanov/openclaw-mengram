@@ -13,6 +13,13 @@
       "graphDepth": { "type": "number" },
       "injectProfile": { "type": "boolean" },
       "profileFrequency": { "type": "number" },
+      "maxFactsPerEntity": { "type": "number" },
+      "maxRelationsPerEntity": { "type": "number" },
+      "maxEpisodes": { "type": "number" },
+      "maxProcedures": { "type": "number" },
+      "maxStepsPerProcedure": { "type": "number" },
+      "captureMessageCount": { "type": "number" },
+      "requestTimeout": { "type": "number" },
       "debug": { "type": "boolean" }
     },
     "required": []
@@ -58,6 +65,48 @@
       "placeholder": "25",
       "advanced": true,
       "help": "Inject cognitive profile every N turns"
+    },
+    "maxFactsPerEntity": {
+      "label": "Max Facts Per Entity",
+      "placeholder": "5",
+      "advanced": true,
+      "help": "Maximum facts shown per entity in recall context"
+    },
+    "maxRelationsPerEntity": {
+      "label": "Max Relations Per Entity",
+      "placeholder": "5",
+      "advanced": true,
+      "help": "Maximum relationships shown per entity in recall context"
+    },
+    "maxEpisodes": {
+      "label": "Max Episodes",
+      "placeholder": "5",
+      "advanced": true,
+      "help": "Maximum episodic memories in recall context"
+    },
+    "maxProcedures": {
+      "label": "Max Procedures",
+      "placeholder": "3",
+      "advanced": true,
+      "help": "Maximum procedures in recall context"
+    },
+    "maxStepsPerProcedure": {
+      "label": "Max Steps Per Procedure",
+      "placeholder": "8",
+      "advanced": true,
+      "help": "Maximum steps shown per procedure"
+    },
+    "captureMessageCount": {
+      "label": "Capture Message Count",
+      "placeholder": "10",
+      "advanced": true,
+      "help": "Number of recent messages to capture after each turn"
+    },
+    "requestTimeout": {
+      "label": "Request Timeout (ms)",
+      "placeholder": "15000",
+      "advanced": true,
+      "help": "HTTP request timeout in milliseconds"
     },
     "debug": {
       "label": "Debug Logging",
