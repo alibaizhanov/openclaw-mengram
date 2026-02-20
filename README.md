@@ -23,7 +23,7 @@ Human-like long-term memory for your OpenClaw agent. Three memory types that wor
 ## Install
 
 ```bash
-openclaw plugins install @mengram/openclaw-mengram
+openclaw plugins install openclaw-mengram
 ```
 
 ## Setup

@@ -1,5 +1,5 @@
 {
-  "name": "@mengram/openclaw-mengram",
+  "name": "openclaw-mengram",
   "version": "1.0.0",
   "type": "module",
   "description": "Mengram memory backend for OpenClaw — semantic, episodic & procedural memory with self-improving procedures and Graph RAG",
