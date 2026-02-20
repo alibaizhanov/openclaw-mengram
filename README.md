@@ -70,6 +70,13 @@ export MENGRAM_API_KEY="om-your-key-here"
 | `graphDepth` | `2` | Knowledge graph hops (0=off, 1, 2) |
 | `injectProfile` | `false` | Include cognitive profile periodically |
 | `profileFrequency` | `25` | Profile injection every N turns |
+| `maxFactsPerEntity` | `5` | Max facts shown per entity in context |
+| `maxRelationsPerEntity` | `5` | Max relationships shown per entity |
+| `maxEpisodes` | `5` | Max episodic memories in context |
+| `maxProcedures` | `3` | Max procedures in context |
+| `maxStepsPerProcedure` | `8` | Max steps shown per procedure |
+| `captureMessageCount` | `10` | Messages to capture after each turn |
+| `requestTimeout` | `15000` | HTTP timeout in milliseconds |
 | `debug` | `false` | Verbose logging |
 
 ## Tools
