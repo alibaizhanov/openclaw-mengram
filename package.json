@@ -1,0 +1,39 @@
+{
+  "name": "@mengram/openclaw-mengram",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Mengram memory backend for OpenClaw — semantic, episodic & procedural memory with self-improving procedures and Graph RAG",
+  "license": "Apache-2.0",
+  "keywords": [
+    "openclaw",
+    "plugin",
+    "memory",
+    "mengram",
+    "long-term-memory",
+    "knowledge-graph",
+    "ai-memory",
+    "procedural-memory"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/alibaizhanov/openclaw-mengram"
+  },
+  "homepage": "https://mengram.io",
+  "dependencies": {
+    "@sinclair/typebox": "0.34.47"
+  },
+  "peerDependencies": {
+    "openclaw": ">=2026.1.29"
+  },
+  "scripts": {
+    "check-types": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "typescript": "^5.9.3"
+  },
+  "openclaw": {
+    "extensions": [
+      "./index.ts"
+    ]
+  }
+}

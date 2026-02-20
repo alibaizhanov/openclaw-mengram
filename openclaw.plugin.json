@@ -1,0 +1,67 @@
+{
+  "id": "openclaw-mengram",
+  "kind": "memory",
+  "configSchema": {
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+      "apiKey": { "type": "string" },
+      "baseUrl": { "type": "string" },
+      "autoRecall": { "type": "boolean" },
+      "autoCapture": { "type": "boolean" },
+      "topK": { "type": "number" },
+      "graphDepth": { "type": "number" },
+      "injectProfile": { "type": "boolean" },
+      "profileFrequency": { "type": "number" },
+      "debug": { "type": "boolean" }
+    },
+    "required": []
+  },
+  "uiHints": {
+    "apiKey": {
+      "label": "Mengram API Key",
+      "sensitive": true,
+      "placeholder": "om-...",
+      "help": "Get your free key at https://mengram.io"
+    },
+    "baseUrl": {
+      "label": "Base URL",
+      "placeholder": "https://mengram.io",
+      "advanced": true,
+      "help": "Custom API base URL for self-hosted instances"
+    },
+    "autoRecall": {
+      "label": "Auto-Recall",
+      "help": "Automatically inject relevant memories before each agent turn"
+    },
+    "autoCapture": {
+      "label": "Auto-Capture",
+      "help": "Automatically store conversation context after each agent turn"
+    },
+    "topK": {
+      "label": "Top K Results",
+      "placeholder": "5",
+      "help": "Maximum memories to retrieve per search"
+    },
+    "graphDepth": {
+      "label": "Graph Depth",
+      "placeholder": "2",
+      "advanced": true,
+      "help": "Knowledge graph traversal depth (0=off, 1=direct, 2=2-hop)"
+    },
+    "injectProfile": {
+      "label": "Inject Profile",
+      "help": "Include cognitive profile in context periodically"
+    },
+    "profileFrequency": {
+      "label": "Profile Frequency",
+      "placeholder": "25",
+      "advanced": true,
+      "help": "Inject cognitive profile every N turns"
+    },
+    "debug": {
+      "label": "Debug Logging",
+      "advanced": true
+    }
+  }
+}
