@@ -20,6 +20,8 @@
       "maxStepsPerProcedure": { "type": "number" },
       "captureMessageCount": { "type": "number" },
       "requestTimeout": { "type": "number" },
+      "maxTriggers": { "type": "number" },
+      "maxTimelineItems": { "type": "number" },
       "debug": { "type": "boolean" }
     },
     "required": []
@@ -107,6 +109,18 @@
       "placeholder": "15000",
       "advanced": true,
       "help": "HTTP request timeout in milliseconds"
+    },
+    "maxTriggers": {
+      "label": "Max Triggers",
+      "placeholder": "10",
+      "advanced": true,
+      "help": "Maximum triggers shown in tools and CLI"
+    },
+    "maxTimelineItems": {
+      "label": "Max Timeline Items",
+      "placeholder": "20",
+      "advanced": true,
+      "help": "Maximum timeline items shown in tools and CLI"
     },
     "debug": {
       "label": "Debug Logging",

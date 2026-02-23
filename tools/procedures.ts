@@ -6,7 +6,7 @@ import type { Logger } from "../logger.ts";
 export function registerProceduresTool(
   api: { registerTool: (tool: unknown) => void },
   client: MengramClient,
-  _cfg: MengramConfig,
+  cfg: MengramConfig,
   log: Logger,
 ) {
   api.registerTool({
@@ -54,7 +54,7 @@ export function registerProceduresTool(
 
         const lines = procedures.map((pr) => {
           const steps = pr.steps
-            .slice(0, 8)
+            .slice(0, cfg.maxStepsPerProcedure)
             .map((s) => `${s.step ?? ""}. ${s.action}`)
             .join("\n    ");
           const v = pr.version > 1 ? ` (v${pr.version})` : "";

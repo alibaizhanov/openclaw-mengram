@@ -8,6 +8,7 @@ import type {
 import type { MengramConfig } from "../config.ts";
 import type { Logger } from "../logger.ts";
 
+const MAX_TRACKED_SESSIONS = 500;
 const turnCounters = new Map<string, number>();
 
 function formatSemantic(results: SemanticResult[], cfg: MengramConfig): string {
@@ -119,6 +120,16 @@ export function buildRecallHandler(
       if (cfg.injectProfile) {
         const count = (turnCounters.get(sessionKey) ?? 0) + 1;
         turnCounters.set(sessionKey, count);
+
+        if (turnCounters.size > MAX_TRACKED_SESSIONS) {
+          const toDelete = turnCounters.size - MAX_TRACKED_SESSIONS;
+          let deleted = 0;
+          for (const key of turnCounters.keys()) {
+            if (deleted >= toDelete) break;
+            turnCounters.delete(key);
+            deleted++;
+          }
+        }
 
         if (count === 1 || count % cfg.profileFrequency === 0) {
           try {

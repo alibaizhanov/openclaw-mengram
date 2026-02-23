@@ -10,6 +10,12 @@ import { registerForgetTool } from "./tools/forget.ts";
 import { registerProfileTool } from "./tools/profile.ts";
 import { registerProceduresTool } from "./tools/procedures.ts";
 import { registerFeedbackTool } from "./tools/feedback.ts";
+import { registerEpisodesTool } from "./tools/episodes.ts";
+import { registerTimelineTool } from "./tools/timeline.ts";
+import { registerTriggersTool } from "./tools/triggers.ts";
+import { registerInsightsTool } from "./tools/insights.ts";
+import { registerAgentsTool } from "./tools/agents.ts";
+import { registerGraphTool } from "./tools/graph.ts";
 import { registerSlashCommands } from "./commands/slash.ts";
 import { registerCli } from "./commands/cli.ts";
 
@@ -46,6 +52,13 @@ export default {
           text: "Mengram not configured. Set your API key in plugin config or MENGRAM_API_KEY env var.",
         }),
       });
+      api.registerCommand({
+        name: "forget",
+        description: "Delete from memory (not configured)",
+        handler: () => ({
+          text: "Mengram not configured. Set your API key in plugin config or MENGRAM_API_KEY env var.",
+        }),
+      });
       return;
     }
 
@@ -53,13 +66,19 @@ export default {
 
     log.info("connected");
 
-    // Register 6 tools
+    // Register 12 tools
     registerSearchTool(api, client, cfg, log);
     registerStoreTool(api, client, cfg, log);
     registerForgetTool(api, client, cfg, log);
     registerProfileTool(api, client, cfg, log);
     registerProceduresTool(api, client, cfg, log);
     registerFeedbackTool(api, client, cfg, log);
+    registerEpisodesTool(api, client, cfg, log);
+    registerTimelineTool(api, client, cfg, log);
+    registerTriggersTool(api, client, cfg, log);
+    registerInsightsTool(api, client, cfg, log);
+    registerAgentsTool(api, client, cfg, log);
+    registerGraphTool(api, client, cfg, log);
 
     // Auto-recall: inject memories before each agent turn
     if (cfg.autoRecall) {

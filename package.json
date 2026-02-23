@@ -1,6 +1,6 @@
 {
   "name": "openclaw-mengram",
-  "version": "1.1.0",
+  "version": "2.0.0",
   "type": "module",
   "description": "Mengram memory backend for OpenClaw — semantic, episodic & procedural memory with self-improving procedures and Graph RAG",
   "license": "Apache-2.0",

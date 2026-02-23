@@ -15,6 +15,8 @@ export interface MengramConfig {
   maxStepsPerProcedure: number;
   captureMessageCount: number;
   requestTimeout: number;
+  maxTriggers: number;
+  maxTimelineItems: number;
 }
 
 function resolveEnv(value: unknown): string | undefined {
@@ -51,5 +53,7 @@ export function parseConfig(raw: unknown): MengramConfig {
     maxStepsPerProcedure: num(cfg.maxStepsPerProcedure, 8),
     captureMessageCount: num(cfg.captureMessageCount, 10),
     requestTimeout: num(cfg.requestTimeout, 15000),
+    maxTriggers: num(cfg.maxTriggers, 10),
+    maxTimelineItems: num(cfg.maxTimelineItems, 20),
   };
 }
