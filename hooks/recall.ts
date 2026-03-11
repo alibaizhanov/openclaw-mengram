@@ -32,8 +32,10 @@ function formatRelations(results: SemanticResult[], cfg: MengramConfig): string 
   for (const r of results) {
     if (!r.relations || r.relations.length === 0) continue;
     for (const rel of r.relations.slice(0, cfg.maxRelationsPerEntity)) {
-      const arrow = rel.direction === "outgoing" ? "->" : "<-";
-      lines.push(`- ${r.entity} ${arrow} ${rel.type} ${arrow} ${rel.target}`);
+      const [source, target] = rel.direction === "outgoing"
+        ? [r.entity, rel.target]
+        : [rel.target, r.entity];
+      lines.push(`- ${source} -> ${rel.type} -> ${target}`);
     }
   }
 

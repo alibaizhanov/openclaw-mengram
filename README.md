@@ -76,21 +76,29 @@ export MENGRAM_API_KEY="om-your-key-here"
 | `maxProcedures` | `3` | Max procedures in context |
 | `maxStepsPerProcedure` | `8` | Max steps shown per procedure |
 | `captureMessageCount` | `10` | Messages to capture after each turn |
+| `maxTriggers` | `10` | Max triggers shown |
+| `maxTimelineItems` | `20` | Max timeline items shown |
 | `requestTimeout` | `15000` | HTTP timeout in milliseconds |
 | `debug` | `false` | Verbose logging |
 
 ## Tools
 
-The agent can also use these tools explicitly:
+The agent can use these 12 tools explicitly:
 
 | Tool | Purpose |
 |---|---|
-| `memory_search` | Search all 3 memory types |
-| `memory_store` | Save text to memory |
-| `memory_forget` | Delete a memory entity |
-| `memory_profile` | Get cognitive profile |
-| `memory_procedures` | List learned workflows |
+| `memory_search` | Search all 3 memory types with Graph RAG |
+| `memory_store` | Save text to long-term memory |
+| `memory_forget` | Delete a memory entity by name |
+| `memory_profile` | Get cognitive profile (who the user is) |
+| `memory_procedures` | List or search learned workflows |
 | `memory_feedback` | Record workflow success/failure (triggers evolution) |
+| `memory_episodes` | Search or list past events with date filtering |
+| `memory_timeline` | Get chronological timeline of memory events |
+| `memory_triggers` | Get smart triggers (reminders, contradictions, patterns) |
+| `memory_insights` | Get AI-generated reflections and patterns |
+| `memory_agents` | Run maintenance agents (curator, connector, digest) |
+| `memory_graph` | Get the knowledge graph (entities + connections) |
 
 ## Slash Commands
 
@@ -103,10 +111,20 @@ The agent can also use these tools explicitly:
 ## CLI
 
 ```bash
-openclaw mengram search "coffee preferences"
-openclaw mengram stats
-openclaw mengram profile
-openclaw mengram procedures
+openclaw mengram search "coffee preferences"   # Search all 3 memory types
+openclaw mengram stats                          # Memory usage statistics
+openclaw mengram profile                        # Cognitive profile
+openclaw mengram procedures                     # List learned workflows
+openclaw mengram episodes                       # List past events
+openclaw mengram timeline                       # Chronological event timeline
+openclaw mengram triggers                       # Smart triggers
+openclaw mengram insights                       # AI-generated reflections
+openclaw mengram agents                         # Run maintenance agents
+openclaw mengram graph                          # Knowledge graph
+openclaw mengram feed                           # Activity feed
+openclaw mengram reindex                        # Reindex embeddings
+openclaw mengram dedup                          # Deduplicate memories
+openclaw mengram merge <source> <target>        # Merge two entities
 ```
 
 ## Experience-Driven Procedures

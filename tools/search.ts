@@ -45,9 +45,10 @@ export function registerSearchTool(
             }
             if (r.relations) {
               for (const rel of r.relations.slice(0, cfg.maxRelationsPerEntity)) {
-                lines.push(
-                  `${r.entity} -> ${rel.type} -> ${rel.target}`,
-                );
+                const [source, target] = rel.direction === "outgoing"
+                  ? [r.entity, rel.target]
+                  : [rel.target, r.entity];
+                lines.push(`${source} -> ${rel.type} -> ${target}`);
               }
             }
           }

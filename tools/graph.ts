@@ -1,3 +1,4 @@
+import { Type } from "@sinclair/typebox";
 import type { MengramClient } from "../client.ts";
 import type { MengramConfig } from "../config.ts";
 import type { Logger } from "../logger.ts";
@@ -13,7 +14,7 @@ export function registerGraphTool(
     description:
       "Get the knowledge graph showing entities and their relationships. " +
       "Use to understand how different memories are connected.",
-    parameters: {},
+    parameters: Type.Object({}),
     async execute(_toolCallId: string) {
       try {
         const data = await client.getGraph();
