@@ -100,11 +100,15 @@ export function buildRecallHandler(
   client: MengramClient,
   cfg: MengramConfig,
   log: Logger,
+  legacy = false,
 ) {
   return async (
     event: Record<string, unknown>,
     ctx: Record<string, unknown>,
-  ): Promise<{ prependContext: string } | void> => {
+  ): Promise<{
+    prependContext?: string;
+    prependSystemContext?: string;
+  } | void> => {
     const prompt = event.prompt as string | undefined;
     if (!prompt || prompt.trim().length === 0) return;
 
@@ -117,7 +121,7 @@ export function buildRecallHandler(
 
       const memoryContext = formatSearchResults(data, cfg);
 
-      // Inject cognitive profile periodically
+      // Inject cognitive profile periodically (via system context for provider caching)
       let profileContext = "";
       if (cfg.injectProfile) {
         const count = (turnCounters.get(sessionKey) ?? 0) + 1;
@@ -145,21 +149,34 @@ export function buildRecallHandler(
         }
       }
 
-      const sections: string[] = [];
-      if (profileContext) sections.push(profileContext);
-      if (memoryContext) sections.push(memoryContext);
-
-      if (sections.length === 0) {
+      if (!profileContext && !memoryContext) {
         log.debug("recall: no memories found");
         return;
       }
 
-      const context = sections.join("\n\n");
-      log.debug(`recall: injecting ${context.length} chars of context`);
+      const result: { prependContext?: string; prependSystemContext?: string } = {};
 
-      return {
-        prependContext: `<mengram-memories>\n${context}\n</mengram-memories>`,
-      };
+      if (legacy) {
+        // Legacy mode: everything goes into prependContext (old behavior)
+        const sections: string[] = [];
+        if (profileContext) sections.push(profileContext);
+        if (memoryContext) sections.push(memoryContext);
+        const context = sections.join("\n\n");
+        result.prependContext = `<mengram-memories>\n${context}\n</mengram-memories>`;
+        log.debug(`recall: injecting ${context.length} chars of context (legacy)`);
+      } else {
+        // New mode: profile → system context (cacheable), memories → user context
+        if (profileContext) {
+          result.prependSystemContext = `<mengram-profile>\n${profileContext}\n</mengram-profile>\n`;
+          log.debug(`recall: injecting ${profileContext.length} chars of profile into system context`);
+        }
+        if (memoryContext) {
+          result.prependContext = `<mengram-memories>\n${memoryContext}\n</mengram-memories>`;
+          log.debug(`recall: injecting ${memoryContext.length} chars of memories into prompt context`);
+        }
+      }
+
+      return result;
     } catch (err) {
       log.error(`recall: ${(err as Error).message}`);
       return;

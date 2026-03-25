@@ -2,7 +2,7 @@ import type { MengramClient, Message } from "../client.ts";
 import type { MengramConfig } from "../config.ts";
 import type { Logger } from "../logger.ts";
 
-const MEMORY_TAG_RE = /<mengram-memories>[\s\S]*?<\/mengram-memories>/g;
+const MEMORY_TAG_RE = /<mengram-(?:memories|profile)>[\s\S]*?<\/mengram-(?:memories|profile)>/g;
 
 function stripInjectedContext(content: string): string {
   return content.replace(MEMORY_TAG_RE, "").trim();

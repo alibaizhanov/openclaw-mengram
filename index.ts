@@ -81,14 +81,22 @@ export default {
     registerGraphTool(api, client, cfg, log);
 
     // Auto-recall: inject memories before each agent turn
+    // Use before_prompt_build (OpenClaw >=2026.3.22) with before_agent_start fallback
     if (cfg.autoRecall) {
-      api.on(
-        "before_agent_start",
-        buildRecallHandler(client, cfg, log) as (
-          ...args: unknown[]
-        ) => unknown,
-      );
-      log.info("auto-recall enabled");
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const apiAny = api as any;
+      const hasNewHook = typeof apiAny.hasHook === "function" && apiAny.hasHook("before_prompt_build");
+      const recallHandler = buildRecallHandler(client, cfg, log, !hasNewHook) as (
+        ...args: unknown[]
+      ) => unknown;
+
+      if (hasNewHook) {
+        api.on("before_prompt_build", recallHandler);
+        log.info("auto-recall enabled (before_prompt_build)");
+      } else {
+        api.on("before_agent_start", recallHandler);
+        log.info("auto-recall enabled (before_agent_start, legacy)");
+      }
     }
 
     // Auto-capture: store memories after each agent turn
