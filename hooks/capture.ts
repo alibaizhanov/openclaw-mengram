@@ -63,7 +63,7 @@ export function buildCaptureHandler(
 
       log.debug(`capture: storing ${nonEmpty.length} messages`);
 
-      await client.add(nonEmpty);
+      await client.add(nonEmpty, { source: "openclaw" });
 
       log.debug("capture: stored successfully");
     } catch (err) {

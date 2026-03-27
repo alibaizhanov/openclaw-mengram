@@ -23,7 +23,7 @@ export function registerStoreTool(
     }),
     async execute(_toolCallId: string, params: { text: string }) {
       try {
-        const result = await client.addText(params.text);
+        const result = await client.addText(params.text, { source: "openclaw" });
 
         return {
           content: [

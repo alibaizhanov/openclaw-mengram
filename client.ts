@@ -194,12 +194,22 @@ export class MengramClient {
 
   async add(
     messages: Message[],
+    options?: { source?: string; metadata?: Record<string, unknown> },
   ): Promise<{ status: string; job_id?: string }> {
-    return this.request("POST", "/v1/add", { messages });
+    const body: Record<string, unknown> = { messages };
+    if (options?.source) body.source = options.source;
+    if (options?.metadata) body.metadata = options.metadata;
+    return this.request("POST", "/v1/add", body);
   }
 
-  async addText(text: string): Promise<{ status: string; job_id?: string }> {
-    return this.request("POST", "/v1/add_text", { text });
+  async addText(
+    text: string,
+    options?: { source?: string; metadata?: Record<string, unknown> },
+  ): Promise<{ status: string; job_id?: string }> {
+    const body: Record<string, unknown> = { text };
+    if (options?.source) body.source = options.source;
+    if (options?.metadata) body.metadata = options.metadata;
+    return this.request("POST", "/v1/add_text", body);
   }
 
   async deleteMemory(name: string): Promise<{ status: string }> {

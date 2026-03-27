@@ -20,7 +20,7 @@ export function registerSlashCommands(
       }
 
       try {
-        await client.addText(text);
+        await client.addText(text, { source: "openclaw" });
         return { text: `Stored to memory: "${text.slice(0, 100)}${text.length > 100 ? "..." : ""}"` };
       } catch (err) {
         log.error(`/remember: ${(err as Error).message}`);
