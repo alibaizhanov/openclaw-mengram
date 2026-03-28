@@ -196,7 +196,7 @@ export class MengramClient {
     messages: Message[],
     options?: { source?: string; metadata?: Record<string, unknown> },
   ): Promise<{ status: string; job_id?: string }> {
-    const body: Record<string, unknown> = { messages };
+    const body: Record<string, unknown> = { messages, agent_id: "openclaw" };
     if (options?.source) body.source = options.source;
     if (options?.metadata) body.metadata = options.metadata;
     return this.request("POST", "/v1/add", body);
