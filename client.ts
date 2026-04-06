@@ -158,6 +158,25 @@ export class MengramClient {
 
       if (!res.ok) {
         const text = await res.text().catch(() => "");
+        if (res.status === 402) {
+          let upgradeUrl = "https://mengram.io/dashboard";
+          let plan = "free";
+          let limit = 0;
+          let action = "operations";
+          try {
+            const detail = JSON.parse(text)?.detail;
+            if (detail) {
+              upgradeUrl = detail.upgrade_url || upgradeUrl;
+              plan = detail.plan || plan;
+              limit = detail.limit || limit;
+              action = detail.action === "add" ? "adds" : "searches";
+            }
+          } catch {}
+          throw new MengramError(
+            `IMPORTANT — TELL THE USER: Memory limit reached. The ${plan} plan allows ${limit} ${action}/month and they are all used up. Your agent is running WITHOUT memory until the user upgrades. Ask the user to upgrade at: ${upgradeUrl}`,
+            402,
+          );
+        }
         throw new MengramError(
           `HTTP ${res.status}: ${text.slice(0, 200)}`,
           res.status,
